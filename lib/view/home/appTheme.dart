@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+
+class AppTheme {
+  static const Color textDark = Color(0xFF4E342E);
+
+  static const Gradient bgGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color(0xFFFFE082),
+      Color(0xFFFFFDE7),
+    ],
+  );
+
+  static const List<Gradient> cardGradients = [
+    LinearGradient(colors: [Color(0xFFFFD54F), Color(0xFFFFF9C4)]),
+    LinearGradient(colors: [Color(0xFFAED581), Color(0xFFE8F5E9)]),
+    LinearGradient(colors: [Color(0xFF81D4FA), Color(0xFFE1F5FE)]),
+    LinearGradient(colors: [Color(0xFFFFAB91), Color(0xFFFBE9E7)]),
+    LinearGradient(colors: [Color(0xFFE54A4A), Color(0xFFECE7E4)]),
+  ];
+}
