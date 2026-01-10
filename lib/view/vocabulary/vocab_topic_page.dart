@@ -24,8 +24,10 @@ class LearningTopicsScreen extends StatefulWidget {
 
 class _LearningTopicsScreenState extends State<LearningTopicsScreen> {
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
 
   List<Topic> _topics = [];
+  List<Topic> _filteredTopics = [];
   int _currentPage = 1;
   int _totalTopics = 0;
 
@@ -44,26 +46,39 @@ class _LearningTopicsScreenState extends State<LearningTopicsScreen> {
     });
 
     _scrollController.addListener(_onScroll);
+    _searchController.addListener(_onSearchChanged);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
+  }
+
+  void _onSearchChanged() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredTopics = List.from(_topics);
+      } else {
+        _filteredTopics = _topics
+            .where((topic) => topic.title.toLowerCase().contains(query))
+            .toList();
+      }
+    });
   }
 
   void _onScroll() {
     if (!_scrollController.hasClients || !_hasMore) return;
 
-    final threshold =
-        _scrollController.position.maxScrollExtent - 200;
+    final threshold = _scrollController.position.maxScrollExtent - 200;
 
     if (_scrollController.position.pixels >= threshold) {
       _loadMoreTopics();
     }
   }
 
-  // LOAD PAGE 1
   Future<void> _loadInitialTopics() async {
     if (_isLoading) return;
 
@@ -71,6 +86,7 @@ class _LearningTopicsScreenState extends State<LearningTopicsScreen> {
       _isLoading = true;
       _currentPage = 1;
       _topics.clear();
+      _filteredTopics.clear();
       _hasMore = true;
     });
 
@@ -87,6 +103,7 @@ class _LearningTopicsScreenState extends State<LearningTopicsScreen> {
 
       setState(() {
         _topics = fetched;
+        _filteredTopics = List.from(fetched);
         _totalTopics = result['total'] ?? 0;
         _hasMore = _topics.length < _totalTopics;
         _currentPage = 2;
@@ -98,7 +115,6 @@ class _LearningTopicsScreenState extends State<LearningTopicsScreen> {
     }
   }
 
-  // LOAD MORE
   Future<void> _loadMoreTopics() async {
     if (_isFetchingMore || !_hasMore || _isLoading) return;
 
@@ -117,10 +133,19 @@ class _LearningTopicsScreenState extends State<LearningTopicsScreen> {
 
       setState(() {
         _topics.addAll(
-          newTopics.where(
-                (t) => !_topics.any((e) => e.id == t.id),
-          ),
+          newTopics.where((t) => !_topics.any((e) => e.id == t.id)),
         );
+
+        // cập nhật filtered theo search
+        final query = _searchController.text.toLowerCase();
+        if (query.isEmpty) {
+          _filteredTopics = List.from(_topics);
+        } else {
+          _filteredTopics = _topics
+              .where((topic) => topic.title.toLowerCase().contains(query))
+              .toList();
+        }
+
         _hasMore = _topics.length < _totalTopics;
         _currentPage++;
       });
@@ -167,32 +192,26 @@ class _LearningTopicsScreenState extends State<LearningTopicsScreen> {
               Expanded(
                 child: _isLoading
                     ? const Center(child: CircularProgressIndicator())
-                    : _topics.isEmpty
-                    ? const Center(child: Text("Không có chủ đề nào"))
-                    : GridView.builder(
+                    : _filteredTopics.isEmpty
+                    ? const Center(child: Text("Don't have data"))
+                    : ListView.builder(
                   controller: _scrollController,
-                  padding: EdgeInsets.fromLTRB(
-                    16,
-                    8,
-                    16,
-                    100, // 👈 khoảng trắng bên dưới
-                  ),
-                  gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                    childAspectRatio: 0.8,
-                  ),
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
                   itemCount:
-                  _topics.length + (_hasMore ? 1 : 0),
+                  _filteredTopics.length + (_hasMore ? 1 : 0),
                   itemBuilder: (context, index) {
-                    if (index == _topics.length) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                    if (index == _filteredTopics.length) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       );
                     }
-                    return TopicCard(topic: _topics[index]);
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: TopicCard(topic: _filteredTopics[index]),
+                    );
                   },
                 ),
               ),
@@ -204,44 +223,29 @@ class _LearningTopicsScreenState extends State<LearningTopicsScreen> {
   }
 
   Widget _buildHeader() {
-    final provider = Provider.of<ProgressProvider>(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: LinearProgressIndicator(
-            value: provider.topicProgressBarPercentage / 100,
-            backgroundColor: AppColors.progressBarFill,
-            valueColor:
-            const AlwaysStoppedAnimation(Color(0xFFEBC934)),
-            minHeight: 20,
+        TextField(
+          controller: _searchController,
+          decoration: InputDecoration(
+            hintText: 'Searching Topics...',
+            prefixIcon: const Icon(Icons.search),
+            suffixIcon: _searchController.text.isNotEmpty
+                ? IconButton(
+              icon: const Icon(Icons.clear),
+              onPressed: () {
+                _searchController.clear();
+                _onSearchChanged();
+              },
+            )
+                : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            filled: true,
+            fillColor: Colors.white,
           ),
-        ),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Lộ trình học tập',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
-                fontSize: 16,
-              ),
-            ),
-            Text(
-              provider.isLoading
-                  ? '...%'
-                  : '${provider.topicProgressBarPercentage.toStringAsFixed(1)}%',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
-              ),
-            ),
-          ],
         ),
       ],
     );
@@ -257,7 +261,7 @@ class TopicCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.cardBackground,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -284,49 +288,63 @@ class TopicCard extends StatelessWidget {
           },
           child: Padding(
             padding: const EdgeInsets.all(12),
-            child: Column(
+            child: Row(
               children: [
                 Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: topic.imageUrl.isNotEmpty
-                      ? Image.network(topic.imageUrl)
+                      ? ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      topic.imageUrl,
+                      fit: BoxFit.cover,
+                      height: 100,
+                    ),
+                  )
                       : const Icon(Icons.image, size: 50),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  topic.title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textDark,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  '${topic.learnedWords}/${topic.totalWords} từ',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textLight,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                LinearProgressIndicator(
-                  value: topic.progress / 100,
-                  backgroundColor: Colors.white,
-                  valueColor: AlwaysStoppedAnimation(
-                    topic.progress >= 100
-                        ? Colors.green
-                        : AppColors.progressBarFill,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${topic.progress}%',
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(width: 12),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        topic.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textDark,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        '${topic.learnedWords}/${topic.totalWords} words',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textLight,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      LinearProgressIndicator(
+                        value: topic.progress / 100,
+                        backgroundColor: Colors.amber,
+                        valueColor: AlwaysStoppedAnimation(
+                          topic.progress >= 100
+                              ? Colors.green
+                              : AppColors.progressBarFill,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${topic.progress}%',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

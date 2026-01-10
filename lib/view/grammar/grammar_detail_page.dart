@@ -44,6 +44,8 @@ class _PageGrammarState extends State<PageGrammar> {
     try {
       final data = await fetchAllGrammarByCategory(widget.categoryId);
       if (!mounted) return;
+
+      // Update streak khi có dữ liệu
       if (data.isNotEmpty) {
         StreakService().updateStreak(context);
       }
@@ -107,7 +109,7 @@ class _PageGrammarState extends State<PageGrammar> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Searching Grammar...',
+                hintText: 'Finding Grammar...',
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
@@ -125,10 +127,11 @@ class _PageGrammarState extends State<PageGrammar> {
               ),
             ),
           ),
+
           Expanded(
             child: _filteredGrammar.isEmpty
                 ? const Center(
-              child: Text('Không tìm thấy grammar nào'),
+              child: Text("Don't have data"),
             )
                 : ListView.builder(
               padding: const EdgeInsets.all(20),

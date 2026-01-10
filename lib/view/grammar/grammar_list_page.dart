@@ -11,16 +11,65 @@ class PageGrammarList extends StatefulWidget {
 }
 
 class _PageGrammarListState extends State<PageGrammarList> {
-  late Future<List<Category>> _futureCategory;
+  final TextEditingController _searchController = TextEditingController();
+  List<Category> _allCategories = [];
+  List<Category> _filteredCategories = [];
+  bool _isLoading = true;
+  String? _error;
 
   @override
   void initState() {
     super.initState();
-    _futureCategory = fetchAllCategory();
+    _loadCategories();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  void _loadCategories() async {
+    try {
+      List<Category> categories = await fetchAllCategory();
+      setState(() {
+        _allCategories = categories;
+        _filteredCategories = List.from(_allCategories);
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredCategories = List.from(_allCategories);
+      } else {
+        _filteredCategories = _allCategories
+            .where((cat) => cat.name.toLowerCase().contains(query))
+            .toList();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<Color> colors = [
+      const Color(0xFFFF6B6B),
+      const Color(0xFF4ECDC4),
+      const Color(0xFF95E1D3),
+      const Color(0xFFF38181),
+      const Color(0xFFAA96DA),
+      const Color(0xFFFCBF49),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -31,62 +80,60 @@ class _PageGrammarListState extends State<PageGrammarList> {
         ),
         backgroundColor: const Color(0xFFFFF176),
       ),
-      body: Container(
-        child: FutureBuilder<List<Category>>(
-          future: _futureCategory,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFBC02D)),
+      body: _isLoading
+          ? const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFBC02D)),
+        ),
+      )
+          : _error != null
+          ? Center(
+        child: Text(
+          "Error: $_error",
+          style: const TextStyle(fontSize: 16, color: Colors.red),
+        ),
+      )
+          : Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Searching Category Grammar',
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    _searchController.clear();
+                    _onSearchChanged();
+                  },
+                )
+                    : null,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            }
-            else if (snapshot.hasError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Error: ${snapshot.error}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-              );
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.book_outlined, size: 64, color: Colors.grey[400]),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'No categories found',
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            final categories = snapshot.data!;
-            final List<Color> colors = [
-              const Color(0xFFFF6B6B),
-              const Color(0xFF4ECDC4),
-              const Color(0xFF95E1D3),
-              const Color(0xFFF38181),
-              const Color(0xFFAA96DA),
-              const Color(0xFFFCBF49),
-            ];
-
-            return ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              itemCount: categories.length,
+                filled: true,
+                fillColor: Colors.white,
+              ),
+            ),
+          ),
+          Expanded(
+            child: _filteredCategories.isEmpty
+                ? Center(
+              child: Text(
+                "Không tìm thấy category nào",
+                style: TextStyle(
+                    fontSize: 16, color: Colors.grey[600]),
+              ),
+            )
+                : ListView.builder(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 20),
+              itemCount: _filteredCategories.length,
               itemBuilder: (context, index) {
-                final item = categories[index];
+                final item = _filteredCategories[index];
                 final color = colors[index % colors.length];
 
                 return Container(
@@ -127,7 +174,8 @@ class _PageGrammarListState extends State<PageGrammarList> {
                               color.withOpacity(0.1),
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius:
+                          BorderRadius.circular(20),
                           border: Border.all(
                             color: color.withOpacity(0.3),
                             width: 1.5,
@@ -147,7 +195,8 @@ class _PageGrammarListState extends State<PageGrammarList> {
                                     color.withOpacity(0.7),
                                   ],
                                 ),
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius:
+                                BorderRadius.circular(16),
                                 boxShadow: [
                                   BoxShadow(
                                     color: color.withOpacity(0.4),
@@ -158,7 +207,10 @@ class _PageGrammarListState extends State<PageGrammarList> {
                               ),
                               child: Center(
                                 child: Text(
-                                  item.icon.isNotEmpty ? item.icon : item.name[0].toUpperCase(),
+                                  item.icon.isNotEmpty
+                                      ? item.icon
+                                      : item.name[0]
+                                      .toUpperCase(),
                                   style: const TextStyle(
                                     fontSize: 28,
                                     fontWeight: FontWeight.bold,
@@ -167,28 +219,22 @@ class _PageGrammarListState extends State<PageGrammarList> {
                               ),
                             ),
                             const SizedBox(width: 16),
-                            // Title
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.name,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF2D3436),
-                                    ),
-                                  ),
-                                ],
+                              child: Text(
+                                item.name,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF2D3436),
+                                ),
                               ),
                             ),
-                            // Arrow icon
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 color: color.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius:
+                                BorderRadius.circular(12),
                               ),
                               child: Icon(
                                 Icons.arrow_forward_ios,
@@ -203,9 +249,10 @@ class _PageGrammarListState extends State<PageGrammarList> {
                   ),
                 );
               },
-            );
-          },
-        ),
+            ),
+          ),
+          SizedBox(height: 20,)
+        ],
       ),
     );
   }

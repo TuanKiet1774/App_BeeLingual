@@ -52,7 +52,6 @@ class _PvpHistoryScreenState extends State<PvpHistoryScreen> {
     try {
       final token = await _session.getAccessToken();
 
-      // Gọi API không cần tham số (mặc định page 1)
       final response = await http.get(
         Uri.parse('$urlAPI/api/matches/history'),
         headers: {

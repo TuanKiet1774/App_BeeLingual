@@ -88,13 +88,9 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
       questionCount: _questionCount,
     );
 
-    // 2. --- SỬA Ở ĐÂY: Đếm ngược 10-15 giây để gọi Bot ---
     _botRequestTimer?.cancel();
     _botRequestTimer = Timer(const Duration(seconds: 12), () {
-      // Nếu sau 12 giây vẫn đang tìm (_isSearching == true)
       if (_isSearching && mounted) {
-        print("Đợi lâu quá, chuyển sang đấu với Bot...");
-        // Gọi hàm mới trong SocketService (bạn cần thêm hàm này vào file socket)
         SocketService().requestBotMatch();
       }
     });
@@ -216,10 +212,8 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
                         )
                       ],
                     ),
-                    // --- SỬA Ở ĐÂY: DÙNG ASSET IMAGE ---
                     child: const CircleAvatar(
                       backgroundColor: Colors.white,
-                      // Thay đường dẫn này bằng đường dẫn file ảnh thật của bạn
                       backgroundImage: AssetImage('assets/Images/logoBee.png'),
                     ),
                   ),
@@ -228,7 +222,7 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
 
                 // Text: Searching
                 const Text(
-                  "Đang tìm đối thủ...",
+                  "Finding...",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -253,8 +247,6 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
               ],
             ),
           ),
-
-          // 3. Nút Hủy to ở dưới cùng
           Positioned(
             bottom: 50,
             left: 20,
@@ -276,7 +268,7 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
                   Icon(Icons.close_rounded, size: 28),
                   SizedBox(width: 10),
                   Text(
-                    "HỦY TÌM KIẾM",
+                    "CANCEL",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -297,12 +289,12 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
         Icon(Icons.emoji_events_rounded, size: 60, color: Color(0xFFFFC83D)),
         SizedBox(height: 10),
         Text(
-          "ĐẤU TRƯỜNG PvP",
+          "PVP ARENA",
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 6),
         Text(
-          "Thách đấu thời gian thực",
+          "Real-time challenge",
           style: TextStyle(color: Colors.grey, fontSize: 16),
         ),
       ],
@@ -318,7 +310,7 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
             children: const [
               Icon(Icons.school_rounded, color: Color(0xFFB58900)),
               SizedBox(width: 8),
-              Text("Cấp độ thi đấu",
+              Text("Level",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ],
           ),
@@ -350,7 +342,7 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
                 children: [
                   Icon(Icons.quiz_rounded, color: Color(0xFFB58900)),
                   SizedBox(width: 8),
-                  Text("Số lượng câu hỏi",
+                  Text("Number of questions",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 ],
               ),
@@ -362,7 +354,7 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  "$_questionCount câu",
+                  "$_questionCount question",
                   style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFB58900)),
                 ),
               ),
@@ -433,7 +425,7 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
               Icon(Icons.bolt_rounded, color: Colors.white, size: 28),
               SizedBox(width: 10),
               Text(
-                "TÌM ĐỐI THỦ NGAY",
+                "FIND AN OPPONENT NOW",
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
