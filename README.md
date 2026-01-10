@@ -18,7 +18,7 @@ Người dùng có thể theo dõi **tiến độ học**, ôn tập kiến th�
 
 ## 🎯 Mục tiêu
 
-- Xây dựng **Mobile App** thân thiện với người dùng.  
+- Xây dựng **Mobile App** thân thiện với người dùng: [App Beelingual](file_apk/app-release.apk)  
 - Cung cấp **Website Admin** để quản lý dữ liệu: [Website Admin](https://beelingual-admin.onrender.com/)  
 - Tạo **Landing Page** giới thiệu về ứng dụng: [Landing Page](https://beelingual.onrender.com/)
 
