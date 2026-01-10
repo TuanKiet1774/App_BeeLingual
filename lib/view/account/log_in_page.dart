@@ -1,9 +1,9 @@
-import 'package:beelingual_app/view/account/sign_up_page.dart';
-import 'package:beelingual_app/component/navigation.dart';
-import 'package:beelingual_app/component/messDialog.dart';
+import 'package:appbeelingual/view/account/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../component/messDialog.dart';
+import '../../component/navigation.dart';
 import '../../component/profileProvider.dart';
 import '../../component/progressProvider.dart';
 import '../../controller/vocabController.dart';

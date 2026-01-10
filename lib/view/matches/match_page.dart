@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:beelingual_app/component/navigation.dart';
-import 'package:beelingual_app/component/profileProvider.dart';
-import 'package:beelingual_app/connect_api/api_connect.dart';
-import 'package:beelingual_app/controller/socketController.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../component/navigation.dart';
+import '../../component/profileProvider.dart';
+import '../../connect_api/api_connect.dart';
+import '../../controller/socketController.dart';
 import 'pvp_page.dart';
 
 class FindMatchScreen extends StatefulWidget {
@@ -127,8 +127,7 @@ class _FindMatchScreenState extends State<FindMatchScreen> with SingleTickerProv
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () {
-              Provider.of<UserProfileProvider
-              >(
+              Provider.of<UserProfileProvider>(
                 context,
                 listen: false,
               ).syncProfileInBackground(context);

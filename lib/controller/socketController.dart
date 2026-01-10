@@ -1,5 +1,6 @@
-import 'package:beelingual_app/connect_api/url.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+import '../connect_api/url.dart';
 
 
 class SocketService {

@@ -1,8 +1,9 @@
-import 'package:beelingual_app/view/matches/match_page.dart';
-import 'package:beelingual_app/component/navigation.dart';
-import 'package:beelingual_app/component/profileProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../component/navigation.dart';
+import '../../component/profileProvider.dart';
+import 'match_page.dart';
 
 class PvpResultScreen extends StatelessWidget {
   final int myScore;

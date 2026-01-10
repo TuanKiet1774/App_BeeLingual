@@ -1,7 +1,8 @@
-import 'package:beelingual_app/component/messDialog.dart';
-import 'package:beelingual_app/controller/exeGrmController.dart';
-import 'package:beelingual_app/model/exe_grammar.dart';
 import 'package:flutter/material.dart';
+
+import '../../component/messDialog.dart';
+import '../../controller/exeGrmController.dart';
+import '../../model/exe_grammar.dart';
 
 class PageExercisesGrmList extends StatefulWidget {
   final String grammarId;
@@ -279,43 +280,6 @@ class _PageExercisesListState extends State<PageExercisesGrmList>
                       ),
                     ),
                   ),
-                ),
-              ),
-
-              // Navigation
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // PREVIOUS (KHÔNG CHO QUAY LẠI)
-                    Opacity(
-                      opacity: 0.4,
-                      child: IconButton(
-                        onPressed: null,
-                        icon: const Icon(Icons.arrow_back_ios_new),
-                      ),
-                    ),
-
-                    // NEXT
-                    IconButton(
-                      onPressed: controller.isAnswered()
-                          ? () {
-                        animateNext(() {
-                          setState(() {
-                            controller.goToNextQuestion(context);
-                            selectedOption = null;
-                            answerController.clear();
-                          });
-                        });
-                      }
-                          : null,
-                      icon: Icon(Icons.arrow_forward_ios,
-                          color: controller.isAnswered()
-                              ? Colors.black
-                              : Colors.grey),
-                    ),
-                  ],
                 ),
               ),
             ],

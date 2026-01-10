@@ -1,8 +1,8 @@
 
-import 'package:beelingual_app/controller/translateController.dart';
 import 'package:flutter/material.dart';
 import "package:provider/provider.dart";
 
+import '../../controller/translateController.dart';
 import 'camera_scan_page.dart';
 
 

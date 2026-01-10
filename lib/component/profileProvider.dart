@@ -1,6 +1,7 @@
-import 'package:beelingual_app/controller/streakController.dart';
-import 'package:beelingual_app/connect_api/api_connect.dart';
 import 'package:flutter/material.dart';
+
+import '../connect_api/api_connect.dart';
+import '../controller/streakController.dart';
 
 class UserProfileProvider extends ChangeNotifier {
   String _fullname = "Đang tải...";

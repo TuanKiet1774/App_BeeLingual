@@ -1,5 +1,6 @@
-import 'package:beelingual_app/controller/progressController.dart';
 import 'package:flutter/material.dart';
+
+import '../controller/progressController.dart';
 
 class ProgressProvider extends ChangeNotifier {
   String _currentLevel = "Level 1";

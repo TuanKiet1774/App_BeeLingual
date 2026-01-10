@@ -1,7 +1,8 @@
-import 'package:beelingual_app/view/grammar/grammar_page.dart';
-import 'package:beelingual_app/controller/grammarController.dart';
-import 'package:beelingual_app/model/grammar.dart';
 import 'package:flutter/material.dart';
+
+import '../../controller/grammarController.dart';
+import '../../model/grammar.dart';
+import 'grammar_page.dart';
 
 class PageGrammarList extends StatefulWidget {
   const PageGrammarList({super.key});

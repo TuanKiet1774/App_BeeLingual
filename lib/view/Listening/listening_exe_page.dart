@@ -1,8 +1,9 @@
-import 'package:beelingual_app/component/messDialog.dart';
-import 'package:beelingual_app/controller/streakController.dart';
-import 'package:beelingual_app/controller/exerciseController.dart';
-import 'package:beelingual_app/model/exercise.dart';
 import 'package:flutter/material.dart';
+
+import '../../component/messDialog.dart';
+import '../../controller/exerciseController.dart';
+import '../../controller/streakController.dart';
+import '../../model/exercise.dart';
 
 class PageListenExe extends StatefulWidget {
   final String level;

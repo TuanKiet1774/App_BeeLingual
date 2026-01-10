@@ -1,8 +1,8 @@
-import 'package:beelingual_app/controller/vocabController.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../../controller/dictionaryController.dart';
+import '../../controller/vocabController.dart';
 import '../../model/dictionary.dart';
 
 class VocabularyLearnedScreen extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:beelingual_app/view/matches/match_result_page.dart';
-import 'package:beelingual_app/view/home/home_page.dart';
-import 'package:beelingual_app/controller/socketController.dart';
-import 'package:beelingual_app/model/exercise.dart';
 import 'package:flutter/material.dart';
+
+import '../../controller/socketController.dart';
+import '../../model/exercise.dart';
+import 'match_result_page.dart';
 
 class PvpGameScreen extends StatefulWidget {
   final dynamic matchData;

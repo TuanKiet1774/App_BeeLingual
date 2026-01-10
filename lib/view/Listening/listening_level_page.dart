@@ -1,6 +1,7 @@
-import 'package:beelingual_app/view/Listening/listening_exe_page.dart';
-import 'package:beelingual_app/model/level.dart';
 import 'package:flutter/material.dart';
+
+import '../../model/level.dart';
+import 'listening_exe_page.dart';
 
 class PageListeningLevel extends StatefulWidget {
   const PageListeningLevel({super.key});

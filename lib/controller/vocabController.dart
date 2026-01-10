@@ -1,6 +1,7 @@
-import 'package:beelingual_app/connect_api/api_connect.dart';
-import 'package:beelingual_app/model/dictionary.dart';
 import 'package:flutter/material.dart';
+
+import '../connect_api/api_connect.dart';
+import '../model/dictionary.dart';
 
 class UserVocabulary extends ChangeNotifier {
   List<UserVocabularyItem> _vocabList = [];

@@ -1,16 +1,15 @@
 import 'dart:convert';
-import 'package:beelingual_app/component/messDialog.dart';
-import 'package:beelingual_app/controller/progressController.dart';
-import 'package:beelingual_app/controller/streakController.dart';
-import 'package:beelingual_app/connect_api/api_connect.dart';
-import 'package:beelingual_app/model/vocabulary.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import '../../component/messDialog.dart';
 import '../../component/progressProvider.dart';
 import '../../connect_api/url.dart';
 import '../../controller/authController.dart';
+import '../../controller/progressController.dart';
+import '../../controller/streakController.dart';
+import '../../model/vocabulary.dart';
 
 class AppColors {
   static const Color background = Color(0xFFFFFDE7);

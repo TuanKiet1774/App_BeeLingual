@@ -1,9 +1,10 @@
-import 'package:beelingual_app/view/vocabulary/vocab_level_page.dart';
-import 'package:beelingual_app/component/progressProvider.dart';
-import 'package:beelingual_app/connect_api/api_connect.dart';
-import 'package:beelingual_app/model/topic.dart';
+import 'package:appbeelingual/view/vocabulary/vocab_level_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../component/progressProvider.dart';
+import '../../connect_api/api_connect.dart';
+import '../../model/topic.dart';
 
 class AppColors {
   static const Color background = Color(0xFFFFFDE7);

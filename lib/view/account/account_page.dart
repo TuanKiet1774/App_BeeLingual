@@ -1,13 +1,12 @@
-import 'package:beelingual_app/view/account/change_pass_page.dart';
-import 'package:beelingual_app/view/account/profile_page.dart';
-import 'package:beelingual_app/view/matches/history_pvp_page.dart';
-import 'package:beelingual_app/component/profileProvider.dart';
-import 'package:beelingual_app/connect_api/api_connect.dart';
+import 'package:appbeelingual/view/account/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../component/profileProvider.dart';
 import '../../controller/authController.dart';
+import '../matches/history_pvp_page.dart';
+import 'change_pass_page.dart';
 
 class AppColors {
   static const Color background = Color(0xFFFFFDE7);

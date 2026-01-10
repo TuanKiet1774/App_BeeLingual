@@ -28,6 +28,10 @@ class _CameraScanPageState extends State<CameraScanPage> {
   @override
   void initState() {
     super.initState();
+    final textRecognizer = TextRecognizer(
+      script: TextRecognitionScript.latin,
+    );
+
     _setupCamera();
   }
 

@@ -1,11 +1,10 @@
-import 'package:beelingual_app/view/account/log_in_page.dart';
-import 'package:beelingual_app/view/account/term_page.dart';
-import 'package:beelingual_app/component/messDialog.dart';
-import 'package:beelingual_app/connect_api/api_connect.dart';
+import 'package:appbeelingual/view/account/term_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../../component/messDialog.dart';
 import '../../controller/authController.dart';
+import 'log_in_page.dart';
 
 class PageSignUp extends StatefulWidget {
   const PageSignUp({super.key});

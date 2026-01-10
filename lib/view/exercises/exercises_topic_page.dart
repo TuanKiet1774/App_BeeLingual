@@ -1,8 +1,9 @@
-import 'package:beelingual_app/view/exercises/exercises_list_page.dart';
-import 'package:beelingual_app/controller/topicController.dart';
+
 import 'package:flutter/material.dart';
 
+import '../../controller/topicController.dart';
 import '../../model/exe_topic.dart';
+import 'exercises_list_page.dart';
 
 class PageTopicExercisesList extends StatefulWidget {
   const PageTopicExercisesList({super.key});

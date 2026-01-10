@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'package:beelingual_app/view/exercises/exercises_topic_page.dart';
 import 'package:flutter/material.dart';
-import 'package:beelingual_app/view/home/appTheme.dart';
-import 'package:beelingual_app/view/vocabulary/vocab_topic_page.dart';
-import 'package:beelingual_app/view/grammar/grammar_list_page.dart';
-import 'package:beelingual_app/view/Listening/listening_level_page.dart';
-
 import '../../controller/authController.dart';
+import '../Listening/listening_level_page.dart';
+import '../exercises/exercises_topic_page.dart';
+import '../grammar/grammar_list_page.dart';
+import '../vocabulary/vocab_topic_page.dart';
+import 'appTheme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

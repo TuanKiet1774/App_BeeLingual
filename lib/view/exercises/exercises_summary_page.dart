@@ -1,5 +1,6 @@
-import 'package:beelingual_app/model/exercise.dart';
 import 'package:flutter/material.dart';
+
+import '../../model/exercise.dart';
 
 class ResultPage extends StatelessWidget {
   final List<Exercises> exercises;

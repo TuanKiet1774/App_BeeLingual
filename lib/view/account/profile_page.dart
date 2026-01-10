@@ -1,6 +1,7 @@
-import 'package:beelingual_app/connect_api/api_connect.dart';
-import 'package:beelingual_app/model/user.dart';
 import 'package:flutter/material.dart';
+
+import '../../connect_api/api_connect.dart';
+import '../../model/user.dart';
 
 class AccountInformation extends StatefulWidget {
   const AccountInformation({super.key});

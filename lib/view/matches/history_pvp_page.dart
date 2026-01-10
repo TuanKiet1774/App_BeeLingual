@@ -1,9 +1,9 @@
-import 'package:beelingual_app/connect_api/url.dart';
 import 'package:flutter/material.dart';
-import 'package:beelingual_app/connect_api/api_connect.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../../connect_api/api_connect.dart';
+import '../../connect_api/url.dart';
 import '../../controller/authController.dart';
 
 const Color kPrimaryYellow = Color(0xFFFFC107);

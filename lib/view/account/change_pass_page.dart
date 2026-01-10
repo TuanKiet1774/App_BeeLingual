@@ -1,7 +1,7 @@
-import 'package:beelingual_app/connect_api/api_connect.dart';
 import 'package:flutter/material.dart';
 
 import '../../component/messDialog.dart';
+import '../../connect_api/api_connect.dart';
 import '../../controller/authController.dart';
 
 class ChangePasswordScreen extends StatefulWidget {

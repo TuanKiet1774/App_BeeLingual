@@ -1,8 +1,9 @@
-import 'package:beelingual_app/view/grammar/grammer_exe_page.dart';
-import 'package:beelingual_app/controller/streakController.dart';
-import 'package:beelingual_app/controller/grammarController.dart';
-import 'package:beelingual_app/model/grammar.dart';
 import 'package:flutter/material.dart';
+
+import '../../controller/grammarController.dart';
+import '../../controller/streakController.dart';
+import '../../model/grammar.dart';
+import 'grammer_exe_page.dart';
 
 class PageGrammar extends StatefulWidget {
   final String title;

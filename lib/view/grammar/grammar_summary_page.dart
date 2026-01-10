@@ -1,5 +1,6 @@
-import 'package:beelingual_app/model/exe_grammar.dart';
 import 'package:flutter/material.dart';
+
+import '../../model/exe_grammar.dart';
 
 class ResultGrmPage extends StatelessWidget {
   final List<ExercisesGrm> exercisesGrm;
