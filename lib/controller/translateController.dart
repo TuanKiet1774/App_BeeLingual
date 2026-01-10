@@ -3,11 +3,19 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
+
+import '../view/translate/camera_scan_page.dart';
+
 
 class TranslateController extends ChangeNotifier {
   final TextEditingController inputController = TextEditingController();
   final FlutterTts flutterTts = FlutterTts();
+  final ImagePicker _imagePicker = ImagePicker();
+
   TranslateController() {
     inputController.addListener(() {
       _debounceTranslate();
@@ -33,7 +41,6 @@ class TranslateController extends ChangeNotifier {
   String result = "";
   String fromLang = "English";
   String toLang = "Vietnamese";
-
   Timer? _debounceTimer;
   String _lastRequestedText = "";
 
@@ -182,4 +189,28 @@ class TranslateController extends ChangeNotifier {
 
   Future<void> pauseInp() => stopSpeech();
   Future<void> pauseOut() => stopSpeech();
+
+  Future<void> scanTextFromCamera(BuildContext context) async {
+    try {
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const CameraScanPage(),
+        ),
+      );
+
+      if (result == null) return;
+
+      final scannedText = result.toString().trim();
+      if (scannedText.isEmpty) return;
+
+      inputController.text = scannedText;
+      translate();
+
+      notifyListeners();
+    } catch (e) {
+      debugPrint("Scan error: $e");
+    }
+  }
+
 }

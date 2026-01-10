@@ -1,6 +1,6 @@
 import 'package:beelingual_app/view/Matches/match_page.dart';
 import 'package:beelingual_app/view/account/account_page.dart';
-import 'package:beelingual_app/view/translation/translate_page.dart';
+import 'package:beelingual_app/view/translate/translate_page.dart';
 import 'package:beelingual_app/view/vocabulary/dictionary_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
